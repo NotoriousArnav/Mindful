@@ -1,0 +1,12 @@
+[project]
+name = "mindful"
+version = "0.1.0"
+description = "Mindful is a Note Taking application with a focus on simplicity and ease of use."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.115.8",
+    "pydantic>=2.10.6",
+    "pymongo>=4.11",
+    "uvicorn>=0.34.0",
+]
