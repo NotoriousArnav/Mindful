@@ -9,4 +9,4 @@ uv sync
 uv run uvicorn --reload --host 0.0.0.0 --port 8000 main:app
 ```
 
-
+**To Install `uv` Visit [here](https://github.com/astral-sh/uv) **

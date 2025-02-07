@@ -61,4 +61,3 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
 async def root():
     """Ping Endpoint for testing"""
     return {"message": "Hello World"}
-
