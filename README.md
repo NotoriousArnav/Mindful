@@ -11,6 +11,14 @@ This is especially useful for people:
 - people who want to find a new perspective on a specific topic.
 - people who are doing research work.
 
+## Features
+- Awesome Note Management
+- Self-Hosted
+- Open Source
+- Easy to Use
+- Fully Customizable
+- Fully Local
+
 
 ## Installation
 Follow these steps to install Mindful on MacOS/Linux/BSD
