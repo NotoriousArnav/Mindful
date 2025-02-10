@@ -3,7 +3,6 @@ from typing import Optional
 from datetime import datetime
 from bson import ObjectId
 
-
 class ObjectIdStr(str):
     """
     Helper class to handle ObjectId conversion to string.
@@ -19,7 +18,6 @@ class ObjectIdStr(str):
 
     @classmethod
     def validate(cls, value, *_):
-        print(_)
         if isinstance(value, ObjectId):
             return str(value)
         if isinstance(value, str):
@@ -71,14 +69,16 @@ class UserLogin(BaseModel):
     username: str
     password: str
 
-class NoteCollection(BaseModel):
-    uid: ObjectIdStr = Field(alias="_id")
+class AbsNoteCollection(BaseModel):
     title: str
     created_at: datetime
     updated_at: datetime
 
-class NoteCollectionCreate(NoteCollection):
+class NoteCollectionCreate(AbsNoteCollection):
     author: str
+
+class NoteCollectionFetch(NoteCollectionCreate):
+    uid: ObjectIdStr = Field(alias="_id")
 
 class Note(BaseModel):
     title: str
@@ -93,3 +93,8 @@ class NoteCreate(Note):
 class NoteFetch(Note):
     uid: ObjectIdStr = Field(alias="_id")
     author: str
+
+    # When a note is fetched, convert ObjectId to string
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.uid = str(self.uid)

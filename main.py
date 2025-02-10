@@ -1,14 +1,12 @@
-from fastapi import FastAPI, HTTPException, Depends
-from pydantic import BaseModel
 from security import hash_password, verify_password, create_access_token, get_current_user
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from database import db
 from schemas import User, FullUser, AbsUser, UserCreate, UserLogin
-from routes import router
-from pprint import pprint
-
-#CORS
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from pprint import pprint
+from routes import router
+from database import db
 
 app = FastAPI(
     title="Mindful",
@@ -50,9 +48,8 @@ async def signup(user: UserCreate):
 @app.post("/login")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     user = await db.get_user(email=form_data.username) or await db.get_user(username=form_data.username)
-    if not user:
-        raise HTTPException(status_code=401, detail="Invalid username or password")
-    if not verify_password(user["password"], form_data.password):
+    exception = HTTPException(status_code=401, detail="Invalid username or password")
+    if not verify_password(user["password"], form_data.password) or not user:
         raise HTTPException(status_code=401, detail="Invalid username or password")
     access_token = create_access_token({"sub": user.get("email")})
     return {"access_token": access_token, "token_type": "bearer"}

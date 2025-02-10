@@ -1,9 +1,10 @@
 import motor.motor_asyncio
 from bson.objectid import ObjectId
+import os
 from schemas import *
 
-MONGO_URL = "mongodb://localhost:27017"  # Replace with your actual MongoDB URL
-DATABASE_NAME = "mindful_db"
+MONGO_URL = os.getenv("MONGODB_URL" ,"mongodb://localhost:27017")  # Replace with your actual MongoDB URL
+DATABASE_NAME = os.getenv("MONGO_DB_NAME","mindful_db")
 
 class MongoDB:
     def __init__(self, MONGO_URL=MONGO_URL, DATABASE_NAME=DATABASE_NAME):
@@ -28,7 +29,8 @@ class MongoDB:
         """
         Retrieve all notes.
         """
-        return await self.db.notes.find(kwargs).to_list(length=None)
+        result = await self.db.notes.find(kwargs).to_list(length=None)
+        return [NoteFetch(**note) for note in result]
 
     async def get_note_by_id(self, note_id: str, **kwargs):
         """
@@ -38,10 +40,11 @@ class MongoDB:
             __import__('pprint').pprint(note_id)
             return None
         note = await self.db.notes.find_one({"_id": ObjectId(note_id), **kwargs})
+        if not note:
+            return None
         _id = note['_id']
         note = NoteFetch(**note)
-        if note:
-            note._id = str(_id)
+        note._id = str(_id)
         return note
 
     async def insert_note(self, note_data: Note):

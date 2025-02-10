@@ -1,15 +1,10 @@
 Pipfile.lock
-
-# Local development
 .env.*
 .env
 .venv
-# Ignore files
 .DS_Store
-
-# Python
+chroma_db
+evaluation_files
 __pycache__
 *.pyc
-
-# Pytest
 .pytest_cache
