@@ -5,7 +5,10 @@ from schemas import *
 from pprint import pprint
 from bson import ObjectId
 
-router = APIRouter()
+router = APIRouter(
+    tags=["notes"],
+    responses={404: {"description": "Not found"}},
+)
 
 # Notes
 
